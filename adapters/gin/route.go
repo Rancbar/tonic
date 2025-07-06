@@ -17,6 +17,22 @@ type Route struct {
 	opts     []docs.OperationObject
 }
 
+func NewRoute(method, path string, handlers ...gin.HandlerFunc) *Route {
+	return &Route{
+		Method:   method,
+		Path:     path,
+		Handlers: handlers,
+	}
+}
+func NewRouteWithOptions(method, path string, opts docs.OperationObject, handlers ...gin.HandlerFunc) *Route {
+	return &Route{
+		Method:   method,
+		Path:     path,
+		opts:     []docs.OperationObject{opts},
+		Handlers: handlers,
+	}
+}
+
 func AddRoute[D any, R any](spec *docs.OpenApi, g gin.IRoutes, route Route) {
 	_, resp := reflect.TypeOf(new(D)), reflect.TypeOf(new(R))
 	parsingKey := "json"
